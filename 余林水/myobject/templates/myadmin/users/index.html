@@ -1,0 +1,67 @@
+{% extends "myadmin/base.html" %}
+
+{% block 'mainbody' %}
+
+	<h4>
+        会员信息管理
+    </h4>
+    <form class="form-inline" action="{% url 'myadmin_usersindex' 1 %}" method="get">
+      <div class="form-group">
+        <div class="input-group">
+          <input type="text" class="form-control" id="exampleInputAmount" placeholder="账号搜索" name="username" value="{{ request.GET.username }}">
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </div>
+      </div>
+    </form>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>账号</th>
+                <th>真实姓名</th>
+                <th>性别</th>
+                <th>邮箱</th>
+                <th>注册时间</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vo in userslist %}
+            <tr>
+                <td>{{ vo.username }}</td>
+                <td>{{ vo.name }}</td>
+                <td>{%  if vo.sex == 1 %}男{% else %}女{% endif %}</td>
+                <td>{{ vo.email }}</td>
+                <td>{{ vo.addtime }}</td>
+                <td>{% if vo.state == 0 %}管理员{% elif vo.state == 1 %}普通会员{% else %}禁用{% endif %}</td>
+                <td>
+                    <a href="{% url 'myadmin_usersdel' vo.id %}" class="view-link">删除</a>
+                    <a href="{% url 'myadmin_usersedit' vo.id %}" class="view-link">编辑</a>
+                    <a href="{% url 'myadmin_usersedit' vo.id %}" class="view-link">修改密码</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>                
+    <div class="pagination">
+       <ul>
+            <li class="disabled">
+                <a href="#">&laquo;</a>
+            </li>
+            <li>
+                {% for p in plist %}
+                    {%if pIndex == p %}
+                        <a style="color:red" href="{% url 'myadmin_usersindex' p %}?{{where|join:'&'}}">{{ p }}</a>
+                    {% else %}
+                        <a href="{% url 'myadmin_usersindex' p %}?{{where|join:'&'}}">{{ p }}</a>
+                    {% endif %}
+                {% endfor %}
+            </li>    
+            <li>
+                <a href="#">&raquo;</a>
+            </li>
+            
+        </ul>
+    </div>
+
+{% endblock %}

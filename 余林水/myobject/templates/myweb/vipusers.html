@@ -1,0 +1,85 @@
+
+{% extends "myweb/base.html" %}
+{% load static from staticfiles %}
+{% block 'mylink' %}
+	<link rel="stylesheet" type="text/css" href="{% static 'myweb/css/member.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'myweb/css/member-app.css' %}">
+{% endblock %}
+
+{% block 'mainbody' %}
+    <!-- 主内容区域 -->
+    <div class="mainbody order">
+		<div class="container">
+			<!-- 面包屑导航 -->
+			<div class="crumbs ">
+				<ol class="breadcrumb">
+					<li class="hidden-xs hidden-sm"><a href="index.html">首页</a></li>
+					<li class="active"><a href="#">我的商城</a></li>
+				</ol>
+			</div><!-- 面包屑导航 E-->
+			
+			<div class="main clearfix">
+				<!-- 左侧导航 -->
+				<div class="left-nav f-fl hidden-xs hidden-sm">
+					<div class="nav-main">
+						<a href="javascript:;" class="type-title"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>订单中心</a>
+						<a href="{% url 'ordersshow' %}" class="ml" >我的订单</a>
+						<a href="#" class="ml " >我的回购单</a>
+						<a href="#" class="ml " >我的意外保</a>
+						<a href="javascript:;" class="type-title"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>个人中心</a>
+						<a href="#" class="ml " >地址管理</a>
+						<a href="#" class="ml " >我的收藏</a>
+						<a href="#" class="ml " >消息提醒</a>
+						<a href="#" class="ml ">建议反馈</a>
+					</div>
+				</div><!-- 左侧导航 E-->
+				<!-- 右侧内容展示 -->
+				<div class="right-content f-fr col-xs-12 col-sm-12">
+					<div class="index-main">
+						<div class="top clearfix">
+							<div class="information clearfix f-fl col-xs-12 col-sm-12">
+
+
+								<div class="info f-fl">
+									<form method="post" action="{% url 'usersupdate' %}">
+									{% csrf_token %}
+									  <div class="form-group" >
+									    <label for="exampleInputEmail1">修改个人信息</label><br><br>
+									    <input type="text" class="form-control" id="exampleInputEmail1" placeholder="真实姓名" name="name" value="{{ request.session.vipusers.name}}">
+									  </div>
+									  <div class="form-group">
+									    <!-- <label for="exampleInputPassword1">Password</label> -->
+									    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="地址(省市县镇村)" name="address" value="{{ request.session.vipusers.address}}">
+									  </div>
+									  <div class="form-group">
+									    <!-- <label for="exampleInputPassword1">Password</label> -->
+									    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="邮编" name="code" value="{{ request.session.vipusers.code}}">
+									  </div>
+									  <div class="form-group">
+									    <!-- <label for="exampleInputPassword1">Password</label> -->
+									    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="电话" name="phone" value="{{ request.session.vipusers.phone}}">
+									  </div>
+									  <div class="form-group">
+									    <!-- <label for="exampleInputPassword1">Password</label> -->
+									    <input type="email" class="form-control" id="exampleInputPassword1" placeholder="email邮箱" name="email" value="{{ request.session.vipusers.email}}">
+									  </div>
+									  <div class="control-group">
+									      <!-- <label class="control-label" for="input01">性别：</label> -->
+									      <div class="controls">
+									          <input type="radio" name="sex" class="input-xlarge" id="input01" value="1" {% if request.session.vipusers.sex == 1 %}checked{% endif %} /> 男
+									          <input type="radio" name="sex" class="input-xlarge" id="input01" value="0" {% if request.session.vipusers.sex == 0 %}checked{% endif %}/> 女
+									      </div>
+									  </div><br>
+									  <button type="submit" class="btn btn-primary">保存</button> <button type="reset" class="btn">重置</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+    <!-- 主内容区域 E-->
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "myadmin/base.html" %}
+
+{% block 'mainbody' %}                
+    <h4>
+        订单信息管理
+    </h4>
+    {% if plist %}
+    <form action="{% url 'm_index' 1 %}" method="get" style="margin-left: 270px;">
+        姓名: <input type="text" name="linkman" value="{{ request.GET.linkman }}">
+        <input type="submit" value="搜索"/ style="margin-top: -10px;">
+    </form>
+    {% endif %}
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>订单号</th>
+                <th>下单人</th>
+                <th>收货人</th>
+                <th>收货地址</th>
+                <th>联系电话</th>
+                <th>时间</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vo in orderslist %}
+            <tr>
+                <td>{{ vo.id }}</td>
+                <td>{{ vo.name }}</td>
+                <td>{{ vo.linkman }}</td>
+                <td>{{ vo.address }}</td>
+                <td>{{ vo.phone }}</td>
+                <td>{{ vo.addtime }}</td>
+                <td>{% if vo.status == 0 %}新订单{% elif vo.status == 1 %}已发货{% elif vo.status == 2 %}已完成{% elif vo.status == 3 %}无效订单{% else %}未知{% endif %}</td>
+                <td>
+                    <a href="{% url 'm_detail' vo.id %}" class="view-link">查看详情</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>                
+    <center>
+    {% if pIndex %}
+    <button onclick="window.location='{% url 'm_index' pIndex|add:-1 %}'">上一页</button>
+        {% for p in plist %}
+        {% if pIndex == p %}
+            <a style="color: #000;" href="{% url 'm_index' p %}?{{where|join:'&'}}">{{ p }}</a> 
+        {% else %}
+            <a style="color: #4c4c4c;" href="{% url 'm_index' p %}?{{where|join:'&'}}">{{ p }}</a> 
+        {% endif %}
+        {% endfor %} 
+    <button onclick="window.location='{% url 'm_index' pIndex|add:1 %}'">下一页</button>
+    </center>
+    {% endif %}
+{% endblock %}
